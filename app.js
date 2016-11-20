@@ -4,6 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+var User = require('app/db/User');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -25,6 +29,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -41,6 +48,52 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+
+passport.use('uuid-secretkey', new LocalStrategy(
+    {
+      usernameField: 'uuid',
+      passwordField : 'secret_key'
+    },
+    function(uuid, secret_key, done) {
+      console.log("Validating user...");
+
+      User.findOne({ "uuid" : uuid }).exec(function (err, user) {
+        if (err) { return done(err); }
+        else if (!user) {
+          console.log("Incorrect uuid");
+          return done(null, false);
+        }
+        else{
+          user.validateSecretKey(secret_key, function(err, valid){
+            if (err){
+              console.log("Error validating uuid: " + err);
+              return done(err);
+            }
+            if (!valid) {
+              console.log("Incorrect secret_key");
+              return done(null, false);
+            }
+            else{
+              console.log("User validated.");
+              return done(null, user);
+            }
+          });
+        }
+
+      });
+    }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  User.findOne({_id : user._id}).exec(function(err, _user){
+    done(err, _user);
+  });
 });
 
 module.exports = app;
