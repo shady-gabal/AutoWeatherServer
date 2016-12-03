@@ -29,6 +29,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+var userCheckExceptionDomains = ['/users/new'];
+
+var checkUser = function(req, res, next){
+  if (userCheckExceptionDomains.indexOf(req.path) == -1){
+    User.authenticateUser(req, res, next, function(err, user){
+      if (err){
+        console.log(err);
+        next(err);
+      }
+      else{
+        req.user = user;
+        next();
+      }
+    });
+  }
+  else{
+    next();
+  }
+};
+
+app.all('*', checkUser);
+
 app.use(passport.initialize());
 app.use(passport.session());
 
