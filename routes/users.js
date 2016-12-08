@@ -29,8 +29,32 @@ router.post('/new', function(req, res){
 });
 
 router.post('/update', function(req, res){
+  if (!req.user){
+    return res.redirect('/users/new');
+  }
+
+  req.user.updateWithData(req.body, function(err){
+
+  });
 
   res.json({});
+});
+
+router.get('/clear', function(req, res){
+  User.remove({}).exec();
+  res.send("OK");
+});
+
+router.get('/updateWeather', function(req, res){
+  var zipcodes = ['11369', '10036', '12345', '90210', '16754'];
+
+  zipcodes.forEach(function(zipcode){
+    WeatherAtZipcode.findOrCreateForZipcode(zipcode, function(err, weather){
+      console.log("created " + weather + " with err " + err);
+    });
+  });
+
+  res.send("OK");
 });
 
 module.exports = router;

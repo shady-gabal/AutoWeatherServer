@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var CronJob = require('cron').CronJob;
 
 var User = require('app/db/User');
 
@@ -13,6 +14,9 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+var updateWeatherAtZipcode = require('./jobs/updateWeatherAtZipcode.js');
+var sendPushNotifications = require('./jobs/sendPushNotifications.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,13 +30,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-
-var userCheckExceptionDomains = ['/users/new'];
+var userCheckExceptionDomains = ['/users/new', '/users/clear', '/users/updateWeather'];
 
 var checkUser = function(req, res, next){
-  if (userCheckExceptionDomains.indexOf(req.path) == -1){
+  if (userCheckExceptionDomains.indexOf(req.baseUrl) == -1){
     User.authenticateUser(req, res, next, function(err, user){
       if (err){
         console.log(err);
@@ -49,7 +50,10 @@ var checkUser = function(req, res, next){
   }
 };
 
-app.all('*', checkUser);
+app.use('*', checkUser);
+
+app.use('/', index);
+app.use('/users', users);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -117,5 +121,16 @@ passport.deserializeUser(function(user, done) {
     done(err, _user);
   });
 });
+
+
+//new CronJob('0 58 0-23/4 0 0 0', function() {
+new CronJob('0 * * * * *', function() {
+  updateWeatherAtZipcode();
+}, null, true, 'America/New_York');
+
+//new CronJob('0 0-59/30 0-23/1 0 0 0', function() {
+new CronJob('30 * * * * *', function() {
+  sendPushNotifications();
+}, null, true, 'America/New_York');
 
 module.exports = app;

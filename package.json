@@ -25,6 +25,7 @@
     "passport": "",
     "moment": "",
     "passport-local" : "",
-    "bcrypt" : "~0.8.7"
+    "bcrypt" : "~0.8.7",
+    "cron" : ""
   }
 }
