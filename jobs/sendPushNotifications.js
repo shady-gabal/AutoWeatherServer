@@ -21,7 +21,7 @@ module.exports = function(){
         date.setMinutes(date.getMinutes() + (15 - remainder));
     };
 
-    var currTime = moment.utc(date).format("hh:mm A");
+    var currTime = moment.utc(date).format("hh:mm A").toLowerCase();
 
     console.log("sending push notifs to " + currTime);
 
