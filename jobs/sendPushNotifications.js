@@ -8,20 +8,21 @@ module.exports = function(){
     var User = require('app/db/User');
     var WeatherPushNotification = require('app/db/WeatherPushNotification');
 
-    var date = new Date();
+    var date = moment().utc().toDate();
 
-    if (date.getMinutes() % 15 != 0){
-        var remainder = date.getMinutes() % 15;
-        if (remainder <= 5){
-            remainder = remainder + 15; //if within 5 minutes, reset to lower bound
+    var interval = 30;
+
+    if (date.getMinutes() % interval != 0){
+        var remainder = date.getMinutes() % interval;
+        if (remainder <= interval / 2){
+            remainder = remainder + interval; //if within 5 minutes, reset to lower bound
         }
-        else if (date.getMinutes() > 45){
-            date.setHours(date.getHours() + 1);
-        }
-        date.setMinutes(date.getMinutes() + (15 - remainder));
+        date.setMinutes(date.getMinutes() + (interval - remainder));
     };
 
-    var currTime = moment.utc(date).format("hh:mm A").toLowerCase();
+    var currTime = Globals.notificationTimeFromDate(date, true);
+
+    currTime = "12:30 pm";
 
     console.log("sending push notifs to " + currTime);
 
@@ -30,8 +31,11 @@ module.exports = function(){
         if (err){
             console.log(err);
         }
+        else if (!users || users.length == 0){
+
+        }
         else{
-            WeatherPushNotification.sendWeatherPushNotifications(users);
+            WeatherPushNotification.sendWeatherPushNotificationsToUsers(users);
         }
     });
 

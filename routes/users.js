@@ -10,22 +10,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/new', function(req, res){
-  var uuid = req.body.uuid;
-  var zipcode = req.body.zipcode;
-
-  if(uuid && zipcode){
-    User.createUser(uuid, zipcode, function(err, secret_key, user){
-      if(err){
-        res.status(418).json({});
-      }
-      else{
-        res.json({"secret_key" : secret_key});
-      }
-    });
-  }
-  else{
-    res.status(418).json({});
-  }
+  User.createUser(req.body, function(err, secret_key, user){
+    if(err){
+      console.log(err);
+      res.json({"error" : "Error"});
+    }
+    else{
+      res.json({"secret_key" : secret_key});
+    }
+  });
 });
 
 router.post('/update', function(req, res){
@@ -34,15 +27,43 @@ router.post('/update', function(req, res){
   }
 
   req.user.updateWithData(req.body, function(err){
-
+    console.log(err);
+    if (err){
+      res.json({"error" : err});
+    }
+    else res.json({});
   });
 
-  res.json({});
+});
+
+router.post('/updatePushNotification', function(req, res){
+  if (!req.user){
+    return res.json({error: "No user found"});
+  }
+
+  req.user.updateWithData(req.body, function(err){
+    console.log(err);
+    if (err){
+      res.json({"error" : err});
+    }
+    else res.json({});
+  });
 });
 
 router.get('/clear', function(req, res){
   User.remove({}).exec();
   res.send("OK");
+});
+
+router.get('/all', function(req, res){
+  User.find({}).exec(function(err, users){
+    if (err){
+      res.json(err);
+    }
+    else{
+      res.json(users);
+    }
+  });
 });
 
 router.get('/updateWeather', function(req, res){
