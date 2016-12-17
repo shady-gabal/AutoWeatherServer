@@ -19,7 +19,7 @@
     "dotenv" : "",
     "get-env" : "",
     "request" : "",
-    "node-opensignal-api" : "",
+    "node-onesignal" : "",
     "mongodb-uri": "",
     "mongoose": "",
     "passport": "",
@@ -27,6 +27,8 @@
     "passport-local" : "",
     "bcrypt" : "~0.8.7",
     "cron" : "",
-    "sprintf-js" : ""
+    "sprintf-js" : "",
+    "node-opensignal-api" : "",
+    "mongoose-autopopulate" : ""
   }
 }

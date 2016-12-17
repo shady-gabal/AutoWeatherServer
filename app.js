@@ -40,7 +40,7 @@ app.use('/testUpdate', function(req, res){
   res.send("OK");
 });
 
-var userCheckExceptionDomains = ['/users/new', '/users/all', '/users/clear', '/users/updateWeather'];
+var userCheckExceptionDomains = ['/users/new', '/users/all', '/users/clear', '/users/updateWeather', '/users/testPushNotifications'];
 
 var checkUser = function(req, res, next){
   if (userCheckExceptionDomains.indexOf(req.baseUrl) == -1){
@@ -135,14 +135,14 @@ passport.deserializeUser(function(user, done) {
 
 //new CronJob('0 58 0-23/4 0 0 0', function() {
 
-//new CronJob('0 * * * * *', function() {
-//  updateWeatherAtZipcode();
-//}, null, true, 'America/New_York');
+new CronJob('0 * * * * *', function() {
+  updateWeatherAtZipcode();
+}, null, true, 'America/New_York');
 
 //new CronJob('0 0-59/30 0-23/1 0 0 0', function() {
 
-//new CronJob('30 * * * * *', function() {
-//  sendPushNotifications();
-//}, null, true, 'America/New_York');
+new CronJob('30 * * * * *', function() {
+  sendPushNotifications();
+}, null, true, 'America/New_York');
 
 module.exports = app;

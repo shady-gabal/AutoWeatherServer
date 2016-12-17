@@ -10,7 +10,7 @@ module.exports = function(){
 
     var date = moment().utc().toDate();
 
-    var interval = 30;
+    var interval = Globals.INTERVAL;
 
     if (date.getMinutes() % interval != 0){
         var remainder = date.getMinutes() % interval;

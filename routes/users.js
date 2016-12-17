@@ -78,4 +78,17 @@ router.get('/updateWeather', function(req, res){
   res.send("OK");
 });
 
+router.get('/testPushNotifications', function(req, res){
+  User.find({}).exec(function(err, users){
+    if (err){
+      console.log(err);
+    }
+    else {
+      User.sendPushNotifications(users, "Hi!", "Hey.");
+    }
+  });
+
+  res.send("OK");
+});
+
 module.exports = router;
