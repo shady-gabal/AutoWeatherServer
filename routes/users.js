@@ -3,6 +3,10 @@ var router = express.Router();
 
 var WeatherAtZipcode = require('app/db/WeatherAtZipcode');
 var User = require('app/db/User');
+var DailyForecast = require('app/db/DailyForecast');
+var HourlyForecast = require('app/db/HourlyForecast');
+var moment = require('moment');
+var Globals = require('app/helpers/Globals');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -52,6 +56,9 @@ router.post('/updatePushNotification', function(req, res){
 
 router.get('/clear', function(req, res){
   User.remove({}).exec();
+  WeatherAtZipcode.remove({}).exec();
+  DailyForecast.remove({}).exec();
+  HourlyForecast.remove({}).exec();
   res.send("OK");
 });
 

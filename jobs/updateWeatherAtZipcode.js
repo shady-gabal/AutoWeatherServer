@@ -4,18 +4,24 @@
 
 module.exports = function(){
     var WeatherAtZipcode = require('app/db/WeatherAtZipcode.js');
+    var Globals = require('app/helpers/Globals');
 
     console.log("updating weathers...");
 
+    var utcTime = Globals.currentUTCNotificationTime();
+
+    //WeatherAtZipcode.find({update_time_utc : utcTime}).exec(function(err, weathers){
     WeatherAtZipcode.find({}).exec(function(err, weathers){
-       if (err){
+
+        if (err){
            console.log(err);
        }
         else{
            console.log("fetched " + weathers.length + " weathers");
 
-           var i = 0;
+           var i = -1;
            var next = function(){
+               i++;
 
                if (i < weathers.length){
                    var weather = weathers[i];
@@ -27,14 +33,12 @@ module.exports = function(){
                        else{
                            console.log("successfully updated zipcode " + weather.zipcode);
                        }
-                       i++;
                        next();
                    });
                }
-
            };
-           next();
 
+           next();
        }
     });
 };

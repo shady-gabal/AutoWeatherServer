@@ -24,6 +24,7 @@
     "mongoose": "",
     "passport": "",
     "moment": "",
+    "moment-timezone" : "",
     "passport-local" : "",
     "bcrypt" : "~0.8.7",
     "cron" : "",

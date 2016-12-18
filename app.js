@@ -9,6 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var CronJob = require('cron').CronJob;
 
 var User = require('app/db/User');
+var Globals = require('app/helpers/Globals');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -135,13 +136,13 @@ passport.deserializeUser(function(user, done) {
 
 //new CronJob('0 58 0-23/4 0 0 0', function() {
 
-new CronJob('0 * * * * *', function() {
+new CronJob('0 0 * * * *', function() {
   updateWeatherAtZipcode();
 }, null, true, 'America/New_York');
 
 //new CronJob('0 0-59/30 0-23/1 0 0 0', function() {
 
-new CronJob('30 * * * * *', function() {
+new CronJob('30 0-59/' + Globals.INTERVAL + ' * * * *', function() {
   sendPushNotifications();
 }, null, true, 'America/New_York');
 
