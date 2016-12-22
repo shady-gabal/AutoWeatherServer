@@ -30,6 +30,7 @@
     "cron" : "",
     "sprintf-js" : "",
     "node-opensignal-api" : "",
-    "mongoose-autopopulate" : ""
+    "mongoose-autopopulate" : "",
+    "jade" : ""
   }
 }
