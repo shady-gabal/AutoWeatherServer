@@ -12,7 +12,7 @@ module.exports = function(){
     console.log("sending push notifs to " + currUTCTime);
 
     User.find({notification_time_utc : currUTCTime}).exec(function(err, users){
-
+    //User.find({}).exec(function(err, users){
         if (err){
             console.log(err);
         }

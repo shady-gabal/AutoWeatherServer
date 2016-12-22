@@ -6,12 +6,12 @@ module.exports = function(){
     var WeatherAtZipcode = require('app/db/WeatherAtZipcode.js');
     var Globals = require('app/helpers/Globals');
 
-    console.log("updating weathers...");
 
     var utcTime = Globals.currentUTCNotificationTime();
+    console.log("updating weathers for " + utcTime + "...");
 
-    //WeatherAtZipcode.find({update_time_utc : utcTime}).exec(function(err, weathers){
-    WeatherAtZipcode.find({}).exec(function(err, weathers){
+    WeatherAtZipcode.find({update_time_utc : utcTime}).exec(function(err, weathers){
+    //WeatherAtZipcode.find({}).exec(function(err, weathers){
 
         if (err){
            console.log(err);
