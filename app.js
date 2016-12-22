@@ -41,7 +41,7 @@ app.use('/testUpdate', function(req, res){
   res.send("OK");
 });
 
-var userCheckExceptionDomains = ['/', '/users/new', '/users/all', '/users/clear', '/users/updateWeather', '/users/testPushNotifications'];
+var userCheckExceptionDomains = ['', '/callbacks/keepAlive', '/users/new', '/users/all', '/users/clear', '/users/updateWeather', '/users/testPushNotifications'];
 
 var checkUser = function(req, res, next){
   if (userCheckExceptionDomains.indexOf(req.baseUrl) == -1){
@@ -140,7 +140,8 @@ new CronJob('0 0 * * * *', function() {
 }, null, true, 'America/New_York');
 
 //new CronJob('30 * * * * *', function() {
-new CronJob('0 0-59/' + Globals.INTERVAL + ' * * * *', function() {
+//new CronJob('0 0-59/' + Globals.INTERVAL + ' * * * *', function() {
+new CronJob('0 0,28 * * * *', function() {
   sendPushNotifications();
 }, null, true, 'America/New_York');
 
