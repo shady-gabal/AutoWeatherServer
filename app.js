@@ -41,7 +41,7 @@ app.use('/testUpdate', function(req, res){
   res.send("OK");
 });
 
-var userCheckExceptionDomains = ['/users/new', '/users/all', '/users/clear', '/users/updateWeather', '/users/testPushNotifications'];
+var userCheckExceptionDomains = ['/', '/users/new', '/users/all', '/users/clear', '/users/updateWeather', '/users/testPushNotifications'];
 
 var checkUser = function(req, res, next){
   if (userCheckExceptionDomains.indexOf(req.baseUrl) == -1){
