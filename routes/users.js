@@ -4,7 +4,6 @@ var router = express.Router();
 var WeatherAtZipcode = require('app/db/WeatherAtZipcode');
 var User = require('app/db/User');
 var DailyForecast = require('app/db/DailyForecast');
-var HourlyForecast = require('app/db/HourlyForecast');
 var moment = require('moment');
 var Globals = require('app/helpers/Globals');
 
@@ -27,7 +26,7 @@ router.post('/new', function(req, res){
 
 router.post('/update', function(req, res){
   if (!req.user){
-    return res.redirect('/users/new');
+    return res.redirect(307, '/users/new');
   }
 
   req.user.updateWithData(req.body, function(err){
@@ -74,14 +73,13 @@ router.get('/all', function(req, res){
 });
 
 router.get('/updateWeather', function(req, res){
-  var zipcodes = ['11369', '10036', '12345', '90210', '16754'];
+  //var zipcodes = ['11369', '10036', '12345', '90210', '16754'];
 
-  zipcodes.forEach(function(zipcode){
-    WeatherAtZipcode.findOrCreateForZipcode(zipcode, function(err, weather){
-      console.log("created " + weather + " with err " + err);
-    });
-  });
-
+  //zipcodes.forEach(function(zipcode){
+  //  WeatherAtZipcode.findOrCreateForZipcode(zipcode, function(err, weather){
+  //    console.log("created " + weather + " with err " + err);
+  //  });
+  //});
   res.send("OK");
 });
 
