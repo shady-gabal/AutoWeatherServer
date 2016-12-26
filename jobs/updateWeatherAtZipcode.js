@@ -17,7 +17,12 @@ module.exports = function(){
            console.log(err);
        }
         else{
-           console.log("fetched " + weathers.length + " weathers");
+            if (weathers.length == 0){
+                console.log("no weathers retrieved");
+            }
+            else{
+                console.log("fetched " + weathers.length + " weathers");
+            }
 
            var i = -1;
            var next = function(){
