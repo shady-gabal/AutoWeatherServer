@@ -57,7 +57,6 @@ router.get('/clear', function(req, res){
   User.remove({}).exec();
   WeatherAtZipcode.remove({}).exec();
   DailyForecast.remove({}).exec();
-  HourlyForecast.remove({}).exec();
   res.send("OK");
 });
 

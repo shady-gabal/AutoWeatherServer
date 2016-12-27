@@ -135,7 +135,7 @@ passport.deserializeUser(function(user, done) {
 
 
 new CronJob('0 1,27 * * * *', function() {
-//new CronJob('0 15 * * * *', function() {
+//new CronJob('0 * * * * *', function() {
   updateWeatherAtZipcode();
 }, null, true, 'America/New_York');
 
