@@ -133,14 +133,13 @@ passport.deserializeUser(function(user, done) {
   });
 });
 
-
-new CronJob('30 59,25 * * * *', function() {
 //new CronJob('0 * * * * *', function() {
+new CronJob('30 59,25 * * * *', function() {
   updateWeatherAtZipcode();
 }, null, true, 'America/New_York');
 
-new CronJob('30 * * * * *', function() {
-//new CronJob('30 0,26 * * * *', function() {
+//new CronJob('30 * * * * *', function() {
+new CronJob('30 0,26 * * * *', function() {
   sendPushNotifications();
 }, null, true, 'America/New_York');
 
