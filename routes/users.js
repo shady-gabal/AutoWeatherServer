@@ -53,12 +53,12 @@ router.post('/updatePushNotification', function(req, res){
   });
 });
 
-router.get('/clear', function(req, res){
-  User.remove({}).exec();
-  WeatherAtZipcode.remove({}).exec();
-  DailyForecast.remove({}).exec();
-  res.send("OK");
-});
+//router.get('/clear', function(req, res){
+//  User.remove({}).exec();
+//  WeatherAtZipcode.remove({}).exec();
+//  DailyForecast.remove({}).exec();
+//  res.send("OK");
+//});
 
 router.get('/all', function(req, res){
   User.find({}).exec(function(err, users){
